@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+<form>
+    <div>
+        <input id="search" placeholder="filter for name"/>
+    </div>
+    <div>
+        <input id="searchButton" type="button" value="Search">
+        <input id="addNewButton" type="button" value="Add New">
+    </div>
+    <table id="productsTable" class="sortable">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+</form>
+
+<div id="modalForm">
+    <span id="modalClose">X</span>
+    <div>
+        <label for="name">Name:</label>
+        <input id="name"/>
+        <span class="errorForm" id="nameErrorMessage"></span>
+    </div>
+    <div>
+        <label for="email">Supplier email:</label>
+        <input id="email"/>
+        <span class="errorForm" id="emailErrorMessage"></span>
+    </div>
+    <div>
+        <label for="count">Count:</label>
+        <input id="count" type="number"/>
+    </div>
+    <div>
+        <label for="price">Price:</label>
+        <input id="price"/>
+    </div>
+    <div>
+        <input id="add" type="button" value="Add/Update">
+    </div>
+</div>
+<div id="overlay"></div>
+
+</body>
+</html>
