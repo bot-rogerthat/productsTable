@@ -1,0 +1,46 @@
+#productForm {
+    width: 350px;
+    height: 250px;
+    border-radius: 5px;
+    border: 3px #000 solid;
+    background: #fff;
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    margin-top: -150px;
+    margin-left: -150px;
+    display: none;
+    opacity: 0;
+    z-index: 5;
+    padding: 20px 10px;
+}
+
+#productFormClose {
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    display: block;
+}
+
+#productForm > div {
+    margin: 0 0 10px 0;
+}
+
+#productForm > div label {
+    display: block;
+}
+
+#count {
+    width: 70px;
+}
+
+.errorForm {
+    color: red;
+}
+
+.itemIdForEdit {
+    display: none;
+}

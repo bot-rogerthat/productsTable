@@ -13,12 +13,12 @@ class Store {
         }
     }
 
-    add(target){
+    add(target) {
         this.products.push(target);
         this.id++;
     }
 
-    remove(id){
+    remove(id) {
         var index = this.products.indexOf(this.findProduct(id));
         if (index > -1) {
             this.products.splice(index, 1);

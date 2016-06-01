@@ -1,0 +1,32 @@
+table {
+    width: 400px;
+    border-collapse: collapse;
+    border: 1px solid #000;
+}
+
+td, th {
+    padding: 5px;
+    border: 1px solid black;
+}
+
+th {
+    text-align: left;
+    background: lightgray;
+}
+
+.productCount {
+    float: right;
+    background-color: darkgrey;
+    border-radius: 25%;
+}
+
+.editProduct {
+    height: 19px;
+    width: 54px;
+    margin-right: 10px;
+}
+
+.deleteProduct {
+    height: 19px;
+    width: 54px;
+}

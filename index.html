@@ -2,8 +2,18 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/productForm.css">
+    <link rel="stylesheet" href="css/deleteForm.css">
+    <link rel="stylesheet" href="css/overlay.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/validator.css">
+    <link rel="stylesheet" href="css/sortable.css">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="scripts/sortable.js"></script>
+
     <script type="text/javascript" src="scripts/product.js"></script>
     <script type="text/javascript" src="scripts/store.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
@@ -12,15 +22,15 @@
     <script type="text/javascript" src="scripts/storeService.js"></script>
 </head>
 <body>
-<form>
+<form class="mainForm">
     <div>
-        <input id="search" placeholder="filter for name"/>
+        <input class="searchLine" placeholder="filter for name"/>
     </div>
     <div>
-        <input id="searchButton" type="button" value="Search">
-        <input id="addNewButton" type="button" value="Add New">
+        <input class="searchButton" type="button" value="Search">
+        <input class="addNewButton" type="button" value="Add New">
     </div>
-    <table id="productsTable" class="sortable">
+    <table class="productsTable">
         <tr>
             <th>Name</th>
             <th>Price</th>
@@ -29,8 +39,9 @@
     </table>
 </form>
 
-<div id="modalForm">
-    <span id="modalClose">X</span>
+<div id="productForm">
+    <span id="productFormClose">X</span>
+    <span class="itemIdForEdit"></span>
     <div>
         <label for="name">Name:</label>
         <input id="name"/>
@@ -59,6 +70,7 @@
     <div>
         <h1>Are you sure?</h1>
         <p class="deleteItem"></p>
+        <span class="itemIdForDelete"></span>
     </div>
     <div>
         <input id="yes" type="button" value="Yes">

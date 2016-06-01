@@ -1,42 +1,44 @@
-var viewModule = (function(){
-    function openModalForm(){
-        $(':input', '#modalForm')
+var viewModule = (function () {
+    function openProductForm() {
+        event.preventDefault();
+        $(':input', '#productForm')
             .not(':button')
             .val('')
             .removeAttr('checked')
             .removeClass()
             .removeAttr('selected');
         $(".errorForm").hide();
-        event.preventDefault();
-        $('#overlay').fadeIn(400, function () {
-                $('#modalForm').css('display', 'block').animate({opacity: 1, top: '50%'}, 200);
-            });
-        }
-
-    function closeModalForm() {
-        $('#modalForm').animate({opacity: 0, top: '45%'}, 200, function () {
-            $(this).css('display', 'none');
-            $('#overlay').fadeOut(400);
-            });
+        $('#overlay').fadeIn(200, function () {
+            $('#productForm').css('display', 'block').animate({opacity: 1, top: '50%'}, 100);
+        });
     }
 
-    function openDeleteForm(argument) {
-        $('#overlay').fadeIn(400, function () {
-            $('#deleteForm').css('display', 'block').animate({opacity: 1, top: '50%'}, 200);
-            });
+    function closeProductForm() {
+        $('#productForm').animate({opacity: 0, top: '45%'}, 100, function () {
+            $(this).css('display', 'none');
+            $('#overlay').fadeOut(100);
+        });
+    }
+
+    function openDeleteForm() {
+        event.preventDefault();
+        $('#overlay').fadeIn(200, function () {
+            $('#deleteForm').css('display', 'block').animate({opacity: 1, top: '50%'}, 100);
+        });
     }
 
     function closeDeleteForm() {
-        $('#deleteForm').animate({opacity: 0, top: '45%'}, 200, function () {
+
+        $('#deleteForm').animate({opacity: 0, top: '45%'}, 100, function () {
             $(this).css('display', 'none');
-            $('#overlay').fadeOut(400);
+            $('#overlay').fadeOut(100);
         });
     }
 
     return {
-            openModalForm: openModalForm,
-            closeModalForm: closeModalForm,
-            openDeleteForm: openDeleteForm,
-            closeDeleteForm: closeDeleteForm
-        };
+        openProductForm: openProductForm,
+        closeProductForm: closeProductForm,
+        openDeleteForm: openDeleteForm,
+        closeDeleteForm: closeDeleteForm
+    };
 })();
