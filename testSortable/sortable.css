@@ -1,9 +1,0 @@
-.sortable th.ascend:after {
-    float: right;
-    content: "\25BC";
-}
-
-.sortable th.descend:after {
-    float: right;
-    content: "\25B2";
-}
