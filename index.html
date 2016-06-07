@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/productForm.css">
+    <link rel="stylesheet" href="css/deleteForm.css">
+    <link rel="stylesheet" href="css/overlay.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/validator.css">
+    <link rel="stylesheet" href="css/sortable.css">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script type="text/javascript" src="scripts/service/sortable.js"></script>
+    <script type="text/javascript" src="scripts/service/validator.js"></script>
+    <script type="text/javascript" src="scripts/service/formatting.js"></script>
+    <script type="text/javascript" src="scripts/form/productForm.js"></script>
+    <script type="text/javascript" src="scripts/form/deleteDlg.js"></script>
+    <script type="text/javascript" src="scripts/table/table.js"></script>
+    <script type="text/javascript" src="scripts/table/row.js"></script>
+    <script type="text/javascript" src="scripts/table/cell.js"></script>
+    <script type="text/javascript" src="scripts/store/product.js"></script>
+    <script type="text/javascript" src="scripts/store/store.js"></script>
+    <script type="text/javascript" src="scripts/main.js"></script>
+</head>
+<body>
+<form class="mainForm">
+    <div>
+        <input class="searchLine mainFormInput" placeholder="filter for name"/>
+    </div>
+    <div>
+        <input class="searchButton mainFormInput" type="button" value="Search">
+        <input class="addNewButton mainFormInput" type="button" value="Add New">
+    </div>
+    <table class="productsTable">
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Actions</th>
+        </tr>
+    </table>
+</form>
+
+<div class="productForm">
+    <span class="productFormClose">X</span>
+    <span class="itemIdForEdit"></span>
+    <div>
+        <label for="name">Name:</label>
+        <input id="name"/>
+        <span class="errorForm" id="nameErrorMessage"></span>
+    </div>
+    <div>
+        <label for="email">Supplier email:</label>
+        <input id="email"/>
+        <span class="errorForm" id="emailErrorMessage"></span>
+    </div>
+    <div>
+        <label for="count">Count:</label>
+        <input id="count" class="productCountForm" type="number"/>
+    </div>
+    <div>
+        <label for="price">Price:</label>
+        <input id="price"/>
+    </div>
+    <div>
+        <input id="add" type="button" value="Add/Update">
+    </div>
+</div>
+<div class="overlay"></div>
+
+<div class="deleteForm">
+    <div>
+        <h1 class="msgQuestion"></h1>
+        <p class="deleteItem"></p>
+        <span class="itemIdForDelete"></span>
+    </div>
+    <div>
+        <input id="yes" type="button" value="Yes">
+        <input id="no" type="button" value="No">
+    </div>
+</div>
+</body>
+</html>
