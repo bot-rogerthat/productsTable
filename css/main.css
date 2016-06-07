@@ -13,7 +13,7 @@
     transition: opacity 0.3s ease;
 }
 
-form > div > input {
+.mainFormInput {
     margin: 10px 0 10px 0;
 }
 
@@ -28,7 +28,6 @@ form > div > input {
 .addNewButton {
     float: right;
 }
-
 
 .trButtons {
     text-align: center;

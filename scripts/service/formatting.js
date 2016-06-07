@@ -1,26 +1,4 @@
-var storeService = (function () {
-    function search(inputVal) {
-        var table = $('.productsTable');
-        table.find('tr').each(function (index, row) {
-            var allCells = $(row).find('td');
-            if (allCells.length > 0) {
-                var found = false;
-                allCells.each(function (index, td) {
-                    var regExp = new RegExp(inputVal, 'i');
-                    if (regExp.test($(td).text())) {
-                        found = true;
-                        return false;
-                    }
-                });
-                if (found == true) {
-                    $(row).show();
-                } else {
-                    $(row).hide();
-                }
-            }
-        });
-    }
-
+var formatting = (function () {
     function formatDollar(value) {
         var sign = value < 0 ? '-' : '',
             i = parseInt(n = Math.abs(+value || 0).toFixed(2)) + '',
@@ -42,9 +20,8 @@ var storeService = (function () {
     }
 
     return {
-        search: search,
         formatDollar: formatDollar,
         formatNumber: formatNumber,
         formatDollarAfter: formatDollarAfter
-    };
+    }
 })();

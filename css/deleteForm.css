@@ -1,4 +1,4 @@
-#deleteForm {
+.deleteForm {
     width: 250px;
     height: 100px;
     border-radius: 5px;
@@ -15,18 +15,18 @@
     padding: 20px 10px;
 }
 
-#deleteForm h1 {
+.deleteForm h1 {
     margin: auto;
     border-bottom: 2px solid black;
 }
 
-#deleteForm input {
+.deleteForm input {
     width: 30%;
     margin: auto;
     display: inline-block;
 }
 
-#deleteForm div {
+.deleteForm div {
     text-align: center;
 }
 

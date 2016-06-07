@@ -1,67 +1,157 @@
 $(document).ready(function () {
 
-    initActions();
-
-    //Создание продуктов и изменение таблицы
     var store = new Store();
+    var table = new Table($('.productsTable'));
 
-    $('#add').on('click', createOrEditProduct);
+    sortable.sort(table.selector);
+
+    var productForm = new ProductForm($('.productForm'), $('.overlay'), $('.addNewButton'), $('#add'), $('.productFormClose'), createOrEditProduct);
+    productForm.init($('#name'), $('#email'), $('#count'), $('#price'));
+
+    var nameLengthValidator = new Validator($('#name'), $('#nameErrorMessage'), 'Should be between 1-15 characters', function () {
+        var nameLength = this.field.val().length;
+        return !(nameLength < 1 || nameLength >= 15);
+    });
+    var nameSpaceValidator = new Validator($('#name'), $('#nameErrorMessage'), 'Should not consist of spaces', function () {
+        var pattern = new RegExp(/^[\s]*$/g);
+        return !pattern.test(this.field.val());
+    });
+    var emailValidator = new Validator($('#email'), $('#emailErrorMessage'), 'Invalid email address', function () {
+        var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+        return pattern.test(this.field.val());
+    });
+    var countValidator = new Validator($('#count'), null, null, function () {
+        return this.field.val() >= 0;
+    });
+    var priceValidator = new Validator($('#price'), null, null, function () {
+        return (this.field.val() !== undefined && this.field.val().length > 0);
+    });
+
+    productForm.validateField($('#name'), nameLengthValidator, nameSpaceValidator);
+    productForm.validateField($('#email'), emailValidator);
+    productForm.validateField($('#count'), countValidator);
+    productForm.validateField($('#price'), priceValidator);
+
+    productForm.formatField($('#price'), formatting.formatNumber, formatting.formatDollar);
+
+    var deleteDlg = new DeleteDlg($('.deleteForm'), $('.overlay'), $('#yes'), $('#no'), acceptFunc);
+    deleteDlg.init('Are you sure?');
+
+    $('.searchButton').on('click', function () {
+            var result = store.filter($(".searchLine").val());
+            if (result.length >= 0) {
+                $('.productsTable tr:not(:first)').remove();
+                result.forEach(function (elem) {
+                    createRow(elem);
+                });
+            }
+        });
+
+    function acceptFunc() {
+        var id = $(".itemIdForDelete").html();
+        table.deleteRow($("#" + id));
+        store.remove(id);
+        deleteDlg.close();
+    }
 
     function createOrEditProduct() {
-        var errorName = validationModule.checkName();
-        var errorEmail = validationModule.checkEmail();
-        var errorCount = validationModule.checkCount();
-        var errorPrice = validationModule.checkPrice();
-        if (!errorName && !errorEmail && !errorCount && !errorPrice) {
+        var errorNameLength = nameLengthValidator.isValid();
+        var errorNameSpaces = nameSpaceValidator.isValid();
+        var errorEmail = emailValidator.isValid();
+        var errorCount = countValidator.isValid();
+        var errorPrice = priceValidator.isValid();
+        if (errorNameLength && errorNameSpaces && errorEmail && errorCount && errorPrice) {
             var name = $('#name').val();
             var email = $('#email').val();
             var count = $('#count').val();
             var price = $('#price').val();
             if ($('.itemIdForEdit').html() === '') {
-                var newProduct = new Product(store.id, name, email, count, price);
+                var newProduct = new Product(0, name, email, count, price);
                 store.add(newProduct);
-                addTableRow(newProduct);
+                createRow(newProduct);
             } else {
                 var modifiedProduct = store.findProduct($('.itemIdForEdit').html());
-                editTable(modifiedProduct);
+                modifiedProduct.name = $('#name').val();
+                modifiedProduct.email = $('#email').val();
+                modifiedProduct.count = $('#count').val();
+                modifiedProduct.price = $('#price').val();
+                modifyRow(modifiedProduct);
+                
             }
-            viewModule.closeProductForm();
+            productForm.close();
         } else {
-            validationModule.focusErrorField(errorName, errorEmail, errorCount, errorPrice);
+            focusErrorField(errorNameLength, errorNameSpaces, errorEmail, errorCount, errorPrice);
         }
     }
 
-    function addTableRow(product) {
+    function focusErrorField(errorNameLength, errorNameSpace, errorEmail, errorCount, errorPrice) {
+        if (!errorNameLength || !errorNameSpace) {
+            $('#name').select();
+            return;
+        }
+        if (!errorEmail) {
+            $('#email').select();
+            return;
+        }
+        if (!errorCount) {
+            $('#count').select();
+            return;
+        }
+        if (!errorPrice) {
+            $('#price').select();
+            return;
+        }
+    }
+
+    function createRow(product) {
         var $editButton = $('<button/>').addClass('editProduct').html('Edit');
         var $deleteButton = $('<button/>').addClass('deleteProduct').html('Delete');
 
-        $('.productsTable tr:last')
-            .after('<tr id="' + product.id + '"><td>' + '<a href="#' + product.id + '">' +
-                product.name + '</a>' +
-                '<div class="productCount">' + product.count + '</div>' +
-                '</td><td>' +
-                storeService.formatDollarAfter(storeService.formatNumber(product.price)) +
-                '</td><td class="trButtons">' +
-                $editButton[0].outerHTML + $deleteButton[0].outerHTML + '</td></tr>');
+        var nameCell = new Cell($('<a/>').attr("href", "#" + product.id).html(product.name)
+            .append($('<div/>').addClass('productCount').html(product.count)));
+        var priceCell = new Cell(formatting.formatDollarAfter(formatting.formatNumber(product.price)));
+        var buttonsCell = new Cell($editButton[0].outerHTML + $deleteButton[0].outerHTML);
 
-        initRowActions(product);
+        var row = new Row(nameCell, priceCell, buttonsCell);
+        row.fill(product.id);
+        table.addRow(row);
+        addActions(product);
     }
 
-    function editTable(modifiedProduct) {
-        $('#' + modifiedProduct.id).find('a').eq(0).html($("#name").val());
-        $('#' + modifiedProduct.id).find('td').eq(1).html(storeService.formatDollarAfter(storeService.formatNumber($('#price').val())));
-        $('#' + modifiedProduct.id).find('.productCount').eq(0).html($('#count').val());
-        modifiedProduct.name = $('#name').val();
-        modifiedProduct.email = $('#email').val();
-        modifiedProduct.count = $('#count').val();
-        modifiedProduct.price = $('#price').val();
+    function modifyRow(product) {
+        var $editButton = $('<button/>').addClass('editProduct').html('Edit');
+        var $deleteButton = $('<button/>').addClass('deleteProduct').html('Delete');
+
+        var nameCell = new Cell($('<a/>').attr("href", "#" + product.id).html($('#name').val())
+            .append($('<div/>').addClass('productCount').html($('#count').val())));
+        var priceCell = new Cell(formatting.formatDollarAfter(formatting.formatNumber($('#price').val())));
+        var buttonsCell = new Cell($editButton[0].outerHTML + $deleteButton[0].outerHTML);
+
+        var row = new Row(nameCell, priceCell, buttonsCell);
+        row.fill(product.id);
         $('.itemIdForEdit').html('');
+        table.updateRow($('#' + product.id), row);
+        addActions(product);
     }
 
-    function initRowActions(product) {
+    function addActions(product) {
         $('.editProduct').on('click', editProduct);
         $('.deleteProduct').on('click', deleteProduct);
         $('a[href="#' + product.id + '"]').on('click', editProduct);
+    }
+
+    function editProduct() {
+        var id = $(this).parent().parent().attr('id');
+        var foundProduct = store.findProduct(id);
+        var map = new Map();
+        map.set($('#name'), foundProduct.name)
+            .set($('#email'), foundProduct.email)
+            .set($('#count'), foundProduct.count)
+            .set($('#price'), foundProduct.price);
+        productForm.fill(map);
+        productForm.show();
+        $('.itemIdForEdit').html('');
+        $('.itemIdForEdit').append(id);
     }
 
     function deleteProduct() {
@@ -70,63 +160,6 @@ $(document).ready(function () {
         $('.deleteItem').append('delete item "' + $(this).parent().parent().find('a').html() + '" ?');
         $('.itemIdForDelete').html('');
         $('.itemIdForDelete').append(id);
-        viewModule.openDeleteForm();
-    }
-
-    function editProduct() {
-        var id = $(this).parent().parent().attr('id');
-        viewModule.openProductForm();
-        var foundProduct = store.findProduct(id);
-        $('#name').val(foundProduct.name);
-        $('#email').val(foundProduct.email);
-        $('#count').val(foundProduct.count);
-        $('#price').val(foundProduct.price);
-        $('.itemIdForEdit').html('');
-        $('.itemIdForEdit').append(id);
-    }
-
-    function initActions() {
-        //Кнопка создания товара, открытие/закрытие модального окна
-        $('.addNewButton').on('click', viewModule.openProductForm);
-        $('#productFormClose, #overlay').on('click', viewModule.closeProductForm);
-
-        $("#nameErrorMessage").hide();
-        $("#emailErrorMessage").hide();
-
-        //Фокус для полей
-        $('#name').focusout(validationModule.checkName);
-        $('#email').focusout(validationModule.checkEmail);
-        $('#price').focusout(validationModule.checkPrice);
-
-        //Поиск
-        $('.searchButton').on('click', function () {
-            storeService.search($(".searchLine").val());
-        });
-
-        //Сортировка
-        sortable.sort($('.productsTable'));
-
-        //Форматирование price - focusout
-        $('#price').focusout(function () {
-            var num = $('#price').val();
-            $('#price').val(storeService.formatDollar(num));
-        });
-
-        //Форматирование price - focusin
-        $('#price').focus(function () {
-            var num = $("#price").val();
-            $("#price").val(storeService.formatNumber(num));
-        });
-
-        //Подтверждение удаления продукта
-        $('#yes').on('click', function () {
-            var id = $(".itemIdForDelete").html();
-            $("#" + id).remove();
-            store.remove(id);
-            viewModule.closeDeleteForm();
-        });
-
-        //Отмена удаления продукта
-        $('#no, #overlay').on('click', viewModule.closeDeleteForm);
+        deleteDlg.show();
     }
 });

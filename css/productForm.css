@@ -1,4 +1,4 @@
-#productForm {
+.productForm {
     width: 350px;
     height: 250px;
     border-radius: 5px;
@@ -15,7 +15,7 @@
     padding: 20px 10px;
 }
 
-#productFormClose {
+.productFormClose {
     width: 21px;
     height: 21px;
     position: absolute;
@@ -25,15 +25,15 @@
     display: block;
 }
 
-#productForm > div {
+.productForm > div {
     margin: 0 0 10px 0;
 }
 
-#productForm > div label {
+.productForm > div label {
     display: block;
 }
 
-#count {
+.productCountForm {
     width: 70px;
 }
 

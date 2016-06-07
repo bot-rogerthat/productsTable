@@ -12,23 +12,26 @@
     <link rel="stylesheet" href="css/sortable.css">
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script type="text/javascript" src="scripts/sortable.js"></script>
-
-    <script type="text/javascript" src="scripts/product.js"></script>
-    <script type="text/javascript" src="scripts/store.js"></script>
+    <script type="text/javascript" src="scripts/service/sortable.js"></script>
+    <script type="text/javascript" src="scripts/service/validator.js"></script>
+    <script type="text/javascript" src="scripts/service/formatting.js"></script>
+    <script type="text/javascript" src="scripts/form/productForm.js"></script>
+    <script type="text/javascript" src="scripts/form/deleteDlg.js"></script>
+    <script type="text/javascript" src="scripts/table/table.js"></script>
+    <script type="text/javascript" src="scripts/table/row.js"></script>
+    <script type="text/javascript" src="scripts/table/cell.js"></script>
+    <script type="text/javascript" src="scripts/store/product.js"></script>
+    <script type="text/javascript" src="scripts/store/store.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
-    <script type="text/javascript" src="scripts/view.js"></script>
-    <script type="text/javascript" src="scripts/validation.js"></script>
-    <script type="text/javascript" src="scripts/storeService.js"></script>
 </head>
 <body>
 <form class="mainForm">
     <div>
-        <input class="searchLine" placeholder="filter for name"/>
+        <input class="searchLine mainFormInput" placeholder="filter for name"/>
     </div>
     <div>
-        <input class="searchButton" type="button" value="Search">
-        <input class="addNewButton" type="button" value="Add New">
+        <input class="searchButton mainFormInput" type="button" value="Search">
+        <input class="addNewButton mainFormInput" type="button" value="Add New">
     </div>
     <table class="productsTable">
         <tr>
@@ -39,8 +42,8 @@
     </table>
 </form>
 
-<div id="productForm">
-    <span id="productFormClose">X</span>
+<div class="productForm">
+    <span class="productFormClose">X</span>
     <span class="itemIdForEdit"></span>
     <div>
         <label for="name">Name:</label>
@@ -54,7 +57,7 @@
     </div>
     <div>
         <label for="count">Count:</label>
-        <input id="count" type="number"/>
+        <input id="count" class="productCountForm" type="number"/>
     </div>
     <div>
         <label for="price">Price:</label>
@@ -64,11 +67,11 @@
         <input id="add" type="button" value="Add/Update">
     </div>
 </div>
-<div id="overlay"></div>
+<div class="overlay"></div>
 
-<div id="deleteForm">
+<div class="deleteForm">
     <div>
-        <h1>Are you sure?</h1>
+        <h1 class="msgQuestion"></h1>
         <p class="deleteItem"></p>
         <span class="itemIdForDelete"></span>
     </div>

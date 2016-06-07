@@ -1,7 +1,7 @@
-var sortable = (function() {
+var sortable = (function () {
     function sort(table) {
         table.addClass('sortable');
-        table.find('th').on('click', function() {
+        table.find('th').on('click', function () {
             $(this).parent().find('th').removeClass();
             var table = $(this).parents('table').eq(0);
             var rows = table.find('tr:gt(0)').toArray().sort(comparer($(this).index()));
@@ -33,6 +33,7 @@ var sortable = (function() {
     function getCellValue(row, index) {
         return $(row).children('td').eq(index).html()
     }
+
     return {
         sort: sort
     }
